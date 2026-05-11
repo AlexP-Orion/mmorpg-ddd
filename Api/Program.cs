@@ -1,41 +1,40 @@
-var builder = WebApplication.CreateBuilder(args);
+using Dominio.Jugadores;
+using Dominio.Partidas;
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+var builder = WebApplication.CreateBuilder(args);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
+app.MapGet("/", () => "API MMORPG DDD funcionando");
 
-app.UseHttpsRedirection();
-
-var summaries = new[]
+app.MapGet("/partida", () =>
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+    var jugadores = new List<Jugador>();
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+    for (int i = 1; i <= 10; i++)
+    {
+        var resultadoJugador = Jugador.Crear(
+            new NombreJugador($"Jugador{i}")
+        );
+
+        jugadores.Add(resultadoJugador.Valor);
+    }
+
+    var resultadoPartida = Partida.Crear(jugadores);
+
+    if (resultadoPartida.EsFallo)
+    {
+        return Results.BadRequest(
+            resultadoPartida.Error
+        );
+    }
+
+    return Results.Ok(new
+    {
+        PartidaId = resultadoPartida.Valor.Id,
+        Estado = resultadoPartida.Valor.Estado.Nombre,
+        Jugadores = resultadoPartida.Valor.Jugadores.Count
+    });
+});
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

@@ -9,3 +9,4 @@ C:\Users\Personal\Documents\MMORPG-DDD\src\Dominio\obj\Debug\net10.0\Dominio.dll
 C:\Users\Personal\Documents\MMORPG-DDD\src\Dominio\obj\Debug\net10.0\refint\Dominio.dll
 C:\Users\Personal\Documents\MMORPG-DDD\src\Dominio\obj\Debug\net10.0\Dominio.pdb
 C:\Users\Personal\Documents\MMORPG-DDD\src\Dominio\obj\Debug\net10.0\ref\Dominio.dll
+C:\Users\Personal\Documents\MMORPG-DDD\src\Dominio\obj\Debug\net10.0\Dominio.sourcelink.json
